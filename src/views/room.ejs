@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <!-- META -->
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="/styles/global.css">
+        <link rel="stylesheet" href="/styles/modal.css">
+        <link rel="stylesheet" href="/styles/room.css">
+
+        <!-- FONTS -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins:ital,wght@0,500;1,600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+        <!-- SCRIPT -->
+        <script src="/scripts/main.js" defer type="module"></script>
+
+        <!-- TITLE -->
+        <title>Rocket.Q - Perguntas e Repostas</title>
+    </head>
+    <body>
+        <div id="room" class="content">
+            <header>
+                <a href="/">
+                    <img src="/images/logo.svg" alt="logo_Rocket.Q"/>
+                </a>
+                <div class="buttons">
+                    <div id="room_id" data-id="<%= roomId %>" class="button outlined">
+                        #<%= roomId %>
+                        <img src="/images/copy.svg" alt="Copiar numero da sala">
+                    </div>
+                    <a href="/create_pass" class="button">
+                       <img src="/images/users_white.svg" alt="Criar uma sala"> 
+                       Criar sala
+                    </a>
+                </div>
+            </header>
+
+            <main>
+                <section id="question_form">
+                    <h2>Faça sua Pergunta</h2>
+                    <form action="/question/create/<%= roomId %>" method="POST">
+                        <label class="screen_only" for-id="question_form">O que você quer perguntar?</label>
+                        <textarea name="question" id="question_form" placeholder="O que você quer perguntar?"></textarea>
+
+                        <footer>
+                            <div>
+                                <img src="/images/lock_black.svg" alt="cadeado">
+                                Esta pergunta é anônima
+                            </div>
+                            <button>Enviar</button>
+                        </footer>
+                    </form>
+                </section>
+
+                <section class="questions">
+                    <h2 class="screen_only">Perguntas da comunidade</h2>
+                    <div class="questions">
+
+                        <% if (isNoQuestions){ %>
+                            <%- include('parts/no_question')%>
+                        <% } %>
+
+                       <% questions.forEach(question => { %>
+                            <div class="question_wrapper">
+                                <div class="question_content">
+                                    <div class="user">
+                                        <img src="/images/user .svg" alt="user">
+                                    </div>
+                                    <div class="question">
+                                        <p><%= question.title %></p>
+                                    </div>
+                                </div>
+                                <div class="actions">
+                                    <a href="#" class="check" data-id="<%= question.id %>">
+                                        <img src="/images/check .svg" alt="Marca como lida">
+                                    Marca como lida
+                                    </a>
+                                    <a href="#" class="delete" data-id="<%= question.id %>">
+                                        <img src="/images/trash 1.svg" alt="Excluir">
+                                    Excluir
+                                    </a>
+                                </div>
+                            </div> 
+                       <% }); %>
+
+                        <% questionsRead.forEach(questionRead => { %>
+                        
+                            <div class="question_wrapper read">
+                                <div class="question_content">
+                                    <div class="user">
+                                        <img src="/images/user .svg" alt="user">
+                                    </div>
+                                    <div class="question">
+                                        <p><%= questionRead.title %></p>
+                                    </div>
+                                </div>
+                                <div class="actions">
+                                    <a href="#" class="delete" data-id="<%= questionRead.id %>">
+                                        <img src="/images/trash 1.svg" alt="Excluir">
+                                    Excluir
+                                    </a>
+                                </div>
+                            </div> 
+
+                        <% }); %>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- MODAL -->
+        <div class="modal_wrapper">
+            <div class="modal">
+                <h2>Excluir Pergunta</h2>
+                <p>Tem certeza que você deseja excluir essa pergunta? </p>
+
+                <form action="#" method="POST">
+                    <label class="screen_only" for-id="password">Digite sua senha admin</label>
+                    <input type="password" id="password" name="password" placeholder="Digite sua senha"/>
+                    
+                    <div class="buttons">
+                        <div class="button grey cancel">Cancelar</div>
+                        <button class="red">Sim, excluir</button>
+                    </div>
+            </div>
+        </div>
+    </body>
+</html>
